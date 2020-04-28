@@ -1,6 +1,7 @@
 ## Use Matthias's image as the base
 FROM mschnepf/slc7-condocker
 
+# Me
 MAINTAINER James Kahn <james.kahn@kit.edu>
 
 ## The following is copied from nvidia/cuda:10.1-cudnn7-runtime-centos7
