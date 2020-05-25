@@ -1,0 +1,39 @@
+stages:
+  - dev
+  - test
+  - prod
+build-prod:
+  stage: prod
+  only:
+    - master
+  tags:
+    - docker-image-build
+  script: "docker build -t gitlab-registry.cern.ch/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILD_REF ."
+  # Uncomment this section and add the variables you need if you want to 
+  # push your image to a different Docker registry than gitlab-registry.cern.ch
+  # or you want to customize the build process of your image
+  #variables:
+    #TO: your.registry.example.com/your_image # where to push resulting image. Default, the GitLab registry
+    # DOCKER_LOGIN_SERVER: your.registry.example.com # If different that gitlab-registry.cern.ch,
+    # we need to authenticate against your docker registry to push this image
+    # DOCKER_LOGIN_USERNAME and DOCKER_LOGIN_PASSWORD to be provided as Secure Variables
+
+build-dev:
+  stage: dev
+  only:
+    - dev
+  tags:
+    - docker-image-build
+  script: "docker build -t gitlab-registry.cern.ch/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILD_REF ."
+  variables:
+    TO: $CI_REGISTRY_IMAGE:$CI_BUILD_STAGE # where to push resulting image. Default, the GitLab registry
+
+build-test:
+  stage: test
+  only:
+    - test
+  tags:
+    - docker-image-build
+  script: "docker build -t gitlab-registry.cern.ch/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILD_REF ." 
+  variables:
+    TO: $CI_REGISTRY_IMAGE:$CI_BUILD_STAGE # where to push resulting image. Default, the GitLab registry
